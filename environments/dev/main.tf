@@ -26,15 +26,15 @@ resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
 
-resource "google_storage_bucket" "default" {
-  name          = "${random_id.bucket_prefix.hex}-bucket-tfstate"
-  force_destroy = false
-  location      = "US"
-  storage_class = "STANDARD"
-  versioning {
-    enabled = true
-  }
-}
+# resource "google_storage_bucket" "default" {
+#   name          = "${random_id.bucket_prefix.hex}-bucket-tfstate"
+#   force_destroy = false
+#   location      = "US"
+#   storage_class = "STANDARD"
+#   versioning {
+#     enabled = true
+#   }
+# }
 
 resource "google_cloudbuild_trigger" "gcs-to-bigquery-python" {
   name = "gcs-to-bigquery-python"
@@ -49,15 +49,11 @@ resource "google_cloudbuild_trigger" "gcs-to-bigquery-python" {
   }
 }
 
-resource "google_project_service" "registry" {
-  service = "containerregistry.googleapis.com"
-  disable_on_destroy = false
+resource "google_container_registry" "registry" {
+  project  = var.project
+  location = var.region
 }
 
-resource "google_project_service" "run" {
-  service = "run.googleapis.com"
-  disable_on_destroy = false
-}
 
 resource "google_cloud_run_service" "my-service" {
   name = var.service_name
@@ -70,7 +66,10 @@ resource "google_cloud_run_service" "my-service" {
     }
   }
   }
-  depends_on = [google_project_service.run]
+  traffic {
+    percent         = 100
+    latest_revision = true
+  }
 }
 
 resource "google_cloud_run_service_iam_member" "allUsers" {
