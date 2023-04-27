@@ -36,13 +36,13 @@ resource "google_storage_bucket" "default" {
   }
 }
 
-resource "google_cloudbuild_trigger" "example" {
-  name = "example"
+resource "google_cloudbuild_trigger" "gcs-to-bigquery-python" {
+  name = "gcs-to-bigquery-python"
   filename = "cloudbuild.yaml"
 
   github {
-    owner = "binxio"
-    name = "scheduled-trigger-example"
+    owner = "shanilevy"
+    name = "gcs-to-bigquery-python"
     push {
       branch = ".*"
     }
