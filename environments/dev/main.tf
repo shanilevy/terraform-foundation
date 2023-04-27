@@ -72,31 +72,31 @@ resource "google_cloud_run_service" "my-service" {
   }
 }
 
-resource "google_cloud_run_service_iam_member" "allUsers" {
-  service  = google_cloud_run_service.my-service.name
-  location = google_cloud_run_service.my-service.location
-  role     = "roles/run.invoker"
-  member   = "allUsers"
-}
+# resource "google_cloud_run_service_iam_member" "allUsers" {
+#   service  = google_cloud_run_service.my-service.name
+#   location = google_cloud_run_service.my-service.location
+#   role     = "roles/run.invoker"
+#   member   = "allUsers"
+# }
 
-resource "google_service_account" "build_runner" {
-  project      = "example"
-  account_id   = "build-runner"
-}
+# resource "google_service_account" "build_runner" {
+#   project      = "example"
+#   account_id   = "build-runner"
+# }
   
-resource "google_project_iam_custom_role" "build_runner" {
-  project     = "example"
-  role_id     = "buildRunner"
-  title       = "Build Runner"
-  description = "Grants permissions to trigger Cloud Builds."
-  permissions = ["cloudbuild.builds.create"]
-}
+# resource "google_project_iam_custom_role" "build_runner" {
+#   project     = "example"
+#   role_id     = "buildRunner"
+#   title       = "Build Runner"
+#   description = "Grants permissions to trigger Cloud Builds."
+#   permissions = ["cloudbuild.builds.create"]
+# }
 
-resource "google_project_iam_member" "build_runner_build_runner" {
-  project = "example"
-  role    = google_project_iam_custom_role.build_runner.name
-  member  = "serviceAccount:${google_service_account.build_runner.email}"
-}
+# resource "google_project_iam_member" "build_runner_build_runner" {
+#   project = "example"
+#   role    = google_project_iam_custom_role.build_runner.name
+#   member  = "serviceAccount:${google_service_account.build_runner.email}"
+# }
 
 module "vpc" {
   source  = "../../modules/vpc"
