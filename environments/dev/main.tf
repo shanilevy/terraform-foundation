@@ -49,10 +49,10 @@ resource "google_cloudbuild_trigger" "gcs-to-bigquery-python" {
   }
 }
 
-resource "google_container_registry" "registry" {
-  project  = var.project
-  location = var.region
-}
+# resource "google_container_registry" "registry" {
+#   project  = var.project
+#   location = var.region
+# }
 
 
 resource "google_cloud_run_service" "my-service" {
