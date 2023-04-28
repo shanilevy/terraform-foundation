@@ -103,15 +103,6 @@ resource "google_pubsub_subscription" "gcs-new-file-sub" {
   enable_message_ordering    = false
 }
 
-
-
-# resource "google_storage_bucket" "bq-files-bucket" {
-#   name          = "bq-files-bucket"
-#   force_destroy = true
-#   location      = "US"
-  
-#   public_access_prevention = "enforced"
-# }
   
 resource "google_storage_bucket" "bq-files-bucket" {
  name          = "bq-files-bucket"
@@ -131,12 +122,6 @@ resource "google_storage_bucket_object" "default" {
  bucket       = google_storage_bucket.bq-files-bucket.id
 }
 
-# resource "google_storage_bucket_iam_binding" "member" {
-#   bucket = google_storage_bucket.bq-files-bucket.name
-#   role = "roles/storage.admin"
-#   members = ["allUsers", "allAuthenticatedUsers"]
-# }
-
 resource "google_storage_notification" "notification" {
   bucket         = google_storage_bucket.bq-files-bucket.name
   payload_format = "JSON_API_V1"
@@ -147,20 +132,6 @@ resource "google_storage_notification" "notification" {
   }
   depends_on = [google_pubsub_topic_iam_binding.binding]
 }
-
-// Enable notifications by giving the correct IAM permission to the unique service account.
-
-data "google_storage_project_service_account" "gcs_account" {
-}
-
-resource "google_pubsub_topic_iam_binding" "binding" {
-  topic   = google_pubsub_topic.gcs-new-file.id
-  role    = "roles/pubsub.publisher"
-  members = ["serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"]
-}
-
-// End enabling notifications
-
 
 resource "google_cloudbuild_trigger" "gcs-to-bigquery" {
   name = "gcs-to-bigquery"
