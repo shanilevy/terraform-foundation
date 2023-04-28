@@ -112,11 +112,10 @@ resource "google_storage_bucket" "bq-files-bucket" {
   #public_access_prevention = "enforced"
 }
 
-resource "google_storage_bucket_iam_member" "member" {
+resource "google_storage_bucket_iam_binding" "member" {
   bucket = google_storage_bucket.bq-files-bucket.name
   role = "roles/storage.admin"
--  member = "allUsers"
--  member = "allAuthenticatedUsers"
+  members = ["allUsers", "allAuthenticatedUsers"]
 }
 
 resource "google_storage_notification" "notification" {
