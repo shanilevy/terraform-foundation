@@ -113,7 +113,6 @@ resource "google_storage_bucket" "bq-files-bucket" {
   versioning {
     enabled = true
   }
-  public_access_prevention = "enforced"
 }
 
 resource "google_storage_notification" "notification" {
