@@ -97,7 +97,7 @@ resource "google_cloudbuild_trigger" "gcs-to-bigquery-python" {
       branch = ".*"
     }
   }
-  depends_on = ["bigquery"]
+  depends_on = [module.bigquery]
 }
 
 # resource "google_container_registry" "registry" {
