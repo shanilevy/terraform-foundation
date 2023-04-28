@@ -109,7 +109,8 @@ resource "google_storage_bucket" "bq-files-bucket" {
   name          = "bq-files-bucket"
   force_destroy = true
   location      = "US"
-  #public_access_prevention = "enforced"
+  
+  public_access_prevention = "enforced"
 }
 
 resource "google_storage_bucket_iam_binding" "member" {
