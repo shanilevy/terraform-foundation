@@ -75,16 +75,71 @@ module "bigquery" {
   }
 }
 
+resource "google_pubsub_topic" "gcs-new-file" {
+  name = "gcs-new-file"
+}
 
-# resource "google_storage_bucket" "default" {
-#   name          = "${random_id.bucket_prefix.hex}-bucket-tfstate"
-#   force_destroy = false
-#   location      = "US"
-#   storage_class = "STANDARD"
-#   versioning {
-#     enabled = true
-#   }
-# }
+resource "google_pubsub_subscription" "gcs-new-file-sub" {
+  name  = "gcs-new-file-sub"
+  topic = google_pubsub_topic.gcs-new-file.name
+
+  labels = {
+    foo = "bq-gcs-new-file"
+  }
+
+  # 20 minutes
+  message_retention_duration = "1200s"
+  retain_acked_messages      = true
+
+  ack_deadline_seconds = 20
+
+  expiration_policy {
+    ttl = "300000.5s"
+  }
+  retry_policy {
+    minimum_backoff = "10s"
+  }
+
+  enable_message_ordering    = false
+}
+
+
+
+resource "google_storage_bucket" "bq-files-bucket" {
+  name          = "bq-files-bucket"
+  force_destroy = false
+  location      = "US"
+  storage_class = "STANDARD"
+  versioning {
+    enabled = true
+  }
+  public_access_prevention = "enforced"
+}
+
+resource "google_storage_notification" "notification" {
+  bucket         = google_storage_bucket.bq-files-bucket.name
+  payload_format = "JSON_API_V1"
+  topic          = google_pubsub_topic.gcs-new-file.id
+  event_types    = ["OBJECT_FINALIZE", "OBJECT_METADATA_UPDATE"]
+  custom_attributes = {
+    new-attribute = "new-attribute-value"
+  }
+  depends_on = [google_pubsub_topic_iam_binding.binding]
+}
+
+// Enable notifications by giving the correct IAM permission to the unique service account.
+
+data "google_storage_project_service_account" "gcs_account" {
+}
+
+resource "google_pubsub_topic_iam_binding" "binding" {
+  topic   = google_pubsub_topic.gcs-new-file.id
+  role    = "roles/pubsub.publisher"
+  members = ["serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"]
+}
+
+// End enabling notifications
+
 
 resource "google_cloudbuild_trigger" "gcs-to-bigquery" {
   name = "gcs-to-bigquery"
