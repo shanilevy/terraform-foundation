@@ -14,7 +14,12 @@
 
 
 variable "project" {
-   description = "The project ID where all resources will be launched."
+  description = "The project name where all resources will be launched."
+  type = string
+}
+
+variable "project_id" {
+  description = "The project ID where all resources will be launched."
   type = string
 }
 
