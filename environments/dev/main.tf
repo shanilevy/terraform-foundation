@@ -104,7 +104,7 @@ resource "google_pubsub_subscription" "gcs-new-file-sub" {
 }
 
 resource "google_pubsub_topic_iam_binding" "binding" {
-    topic       = "${google_pubsub_topic.topic.name}"
+    topic       = "${google_pubsub_topic.gcs-new-file.name}"
     role        = "roles/pubsub.publisher"
 
     members     = ["serviceAccount:var.project_id@gs-project-accounts.iam.gserviceaccount.com"]
