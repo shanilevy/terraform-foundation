@@ -107,12 +107,9 @@ resource "google_pubsub_subscription" "gcs-new-file-sub" {
 
 resource "google_storage_bucket" "bq-files-bucket" {
   name          = "bq-files-bucket"
-  force_destroy = false
+  force_destroy = true
   location      = "US"
-  storage_class = "STANDARD"
-  versioning {
-    enabled = true
-  }
+  public_access_prevention = "enforced"
 }
 
 resource "google_storage_notification" "notification" {
