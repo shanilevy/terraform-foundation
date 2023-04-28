@@ -109,7 +109,14 @@ resource "google_storage_bucket" "bq-files-bucket" {
   name          = "bq-files-bucket"
   force_destroy = true
   location      = "US"
-  public_access_prevention = "enforced"
+  #public_access_prevention = "enforced"
+}
+
+resource "google_storage_bucket_iam_member" "member" {
+  bucket = google_storage_bucket.bq-files-bucket.name
+  role = "roles/storage.admin"
+-  member = "allUsers"
+-  member = "allAuthenticatedUsers"
 }
 
 resource "google_storage_notification" "notification" {
