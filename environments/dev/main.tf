@@ -105,19 +105,37 @@ resource "google_pubsub_subscription" "gcs-new-file-sub" {
 
 
 
-resource "google_storage_bucket" "bq-files-bucket" {
-  name          = "bq-files-bucket"
-  force_destroy = true
-  location      = "US"
+# resource "google_storage_bucket" "bq-files-bucket" {
+#   name          = "bq-files-bucket"
+#   force_destroy = true
+#   location      = "US"
   
-  public_access_prevention = "enforced"
+#   public_access_prevention = "enforced"
+# }
+  
+resource "google_storage_bucket" "bq-files-bucket" {
+ name          = "bq-files-bucket"
+ location      = "US"
+ storage_class = "STANDARD"
+
+ uniform_bucket_level_access = true
 }
 
-resource "google_storage_bucket_iam_binding" "member" {
-  bucket = google_storage_bucket.bq-files-bucket.name
-  role = "roles/storage.admin"
-  members = ["allUsers", "allAuthenticatedUsers"]
+# Upload a text file as an object
+# to the storage bucket
+
+resource "google_storage_bucket_object" "default" {
+ name         = "file.txt"
+ source       = "file.txt"
+ content_type = "text/plain"
+ bucket       = google_storage_bucket.bq-files-bucket.id
 }
+
+# resource "google_storage_bucket_iam_binding" "member" {
+#   bucket = google_storage_bucket.bq-files-bucket.name
+#   role = "roles/storage.admin"
+#   members = ["allUsers", "allAuthenticatedUsers"]
+# }
 
 resource "google_storage_notification" "notification" {
   bucket         = google_storage_bucket.bq-files-bucket.name
