@@ -86,19 +86,19 @@ module "bigquery" {
 #   }
 # }
 
-# resource "google_cloudbuild_trigger" "gcs-to-bigquery-python" {
-#   name = "gcs-to-bigquery-python"
-#   filename = "cloudbuild.yaml"
+resource "google_cloudbuild_trigger" "gcs-to-bigquery" {
+  name = "gcs-to-bigquery"
 
-#   github {
-#     owner = "shanilevy"
-#     name = "gcs-to-bigquery-python"
-#     push {
-#       branch = ".*"
-#     }
-#   }
-#   depends_on = [module.bigquery]
-# }
+  github {
+    owner = "shanilevy"
+    name = "gcs-to-bigquery-python"
+    push {
+      branch = ".*"
+    }
+  }
+  filename = "cloudbuild.yaml"
+  depends_on = [module.bigquery]
+}
 
 # resource "google_container_registry" "registry" {
 #   project  = var.project
