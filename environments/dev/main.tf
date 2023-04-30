@@ -204,7 +204,7 @@ resource "google_eventarc_trigger" "trigger-pubsub-tf" {
         }
     }
     pubsub {
-      topic = "gcs-new-file"
+      topic = projects/${var.project_id}/topics/gcs-new-file
     }
 }
 
