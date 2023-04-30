@@ -103,12 +103,12 @@ resource "google_pubsub_subscription" "gcs-new-file-sub" {
   enable_message_ordering    = false
 }
 
-resource "google_pubsub_topic_iam_binding" "binding" {
-    topic       = "${google_pubsub_topic.gcs-new-file.name}"
-    role        = "roles/pubsub.publisher"
+# resource "google_pubsub_topic_iam_binding" "binding" {
+#     topic       = "${google_pubsub_topic.gcs-new-file.name}"
+#     role        = "roles/pubsub.publisher"
 
-    members     = ["serviceAccount:${var.project_id}@gs-project-accounts.iam.gserviceaccount.com"]
-}  
+#     members     = ["serviceAccount:${var.project_id}@gs-project-accounts.iam.gserviceaccount.com"]
+# }  
 
   
 resource "google_storage_bucket" "bq-files-bucket" {
