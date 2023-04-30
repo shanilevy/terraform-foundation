@@ -203,6 +203,9 @@ resource "google_eventarc_trigger" "trigger-pubsub-tf" {
             region = var.region
         }
     }
+    pubsub {
+      topic = "gcs-new-file"
+    }
 }
 
 # resource "google_cloud_run_service_iam_member" "allUsers" {
