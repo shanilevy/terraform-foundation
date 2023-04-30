@@ -26,6 +26,20 @@ resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
 
+# # Enable Cloud Run API
+# resource "google_project_service" "run" {
+#   provider           = google-beta
+#   service            = "run.googleapis.com"
+#   disable_on_destroy = false
+# }
+
+# # Enable Eventarc API
+# resource "google_project_service" "eventarc" {
+#   provider           = google-beta
+#   service            = "eventarc.googleapis.com"
+#   disable_on_destroy = false
+# }
+
 module "vpc" {
   source  = "../../modules/vpc"
   project = var.project
@@ -174,6 +188,21 @@ resource "google_cloud_run_service" "my-service" {
     percent         = 100
     latest_revision = true
   }
+}
+
+resource "google_eventarc_trigger" "trigger-pubsub-tf" {
+    name = "trigger-pubsub-tf"
+    location = var.region
+    matching_criteria {
+        attribute = "type"
+        value = "google.cloud.pubsub.topic.v1.messagePublished"
+    }
+    destination {
+        cloud_run_service {
+            service = google_cloud_run_service.my-service.name
+            region = var.region
+        }
+    }
 }
 
 # resource "google_cloud_run_service_iam_member" "allUsers" {
