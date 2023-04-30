@@ -20,6 +20,10 @@ output "project_id" {
   value = var.project_id
 }
 
+output "project_number" {
+  value = var.project_number
+}
+
 output "url" {
   value = "google_cloud_run_service.my-service.status[0].url"
 }

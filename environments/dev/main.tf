@@ -107,7 +107,7 @@ resource "google_pubsub_topic_iam_binding" "binding" {
     topic       = "${google_pubsub_topic.gcs-new-file.name}"
     role        = "roles/pubsub.publisher"
 
-    members     = ["serviceAccount:service-${var.project_id}@gs-project-accounts.iam.gserviceaccount.com"]
+    members     = ["serviceAccount:service-${var.project_number}@gs-project-accounts.iam.gserviceaccount.com"]
 }  
 
   
