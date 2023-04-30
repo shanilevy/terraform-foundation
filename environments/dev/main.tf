@@ -177,7 +177,7 @@ resource "google_cloud_run_service" "my-service" {
   template  {
     spec {
     containers {
-            image = "gcr.io/${var.project}/gcs-bq-image"
+            image = "gcr.io/${var.project}/gcs-bq-image:latest"
     }
   }
   }
