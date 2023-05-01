@@ -217,12 +217,12 @@ resource "google_eventarc_trigger" "trigger-pubsub-tf" {
   }
 }
 
-resource "google_cloud_run_service_iam_member" "allUsers" {
-  service  = google_cloud_run_service.my-service.name
-  location = google_cloud_run_service.my-service.location
-  role     = "roles/run.invoker"
-  member   = "allUsers"
-}
+# resource "google_cloud_run_service_iam_member" "allUsers" {
+#   service  = google_cloud_run_service.my-service.name
+#   location = google_cloud_run_service.my-service.location
+#   role     = "roles/run.invoker"
+#   member   = "allUsers"
+# }
 
 # resource "google_service_account_iam_binding" "cloudbuild-role1" {
 #   service_account_id = "${var.project_id}@cloudbuild.gserviceaccount.com"
