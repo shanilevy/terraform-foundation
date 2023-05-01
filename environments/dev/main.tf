@@ -26,25 +26,39 @@ resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
 
-# # Enable Cloud Run API
-# resource "google_project_service" "run" {
-#   provider           = google-beta
-#   service            = "run.googleapis.com"
-#   disable_on_destroy = false
-# }
-
-# # Enable Eventarc API
-# resource "google_project_service" "eventarc" {
-#   provider           = google-beta
-#   service            = "eventarc.googleapis.com"
-#   disable_on_destroy = false
-# }
-
-module "vpc" {
-  source  = "../../modules/vpc"
-  project = var.project
-  env     = local.env
+# Enable Cloud Run API
+resource "google_project_service" "run" {
+  provider           = google-beta
+  service            = "run.googleapis.com"
+  disable_on_destroy = false
 }
+
+# Enable Cloud Build API
+resource "google_project_service" "cloudbuild" {
+  provider           = google-beta
+  service            = "cloudbuild.googleapis.com"
+  disable_on_destroy = false
+}
+
+# Enable Eventarc API
+resource "google_project_service" "eventarc" {
+  provider           = google-beta
+  service            = "eventarc.googleapis.com"
+  disable_on_destroy = false
+}
+
+# Enable Eventarc API
+resource "google_project_service" "cloudresourcemanager" {
+  provider           = google-beta
+  service            = "cloudresourcemanager.googleapis.com"
+  disable_on_destroy = false
+}
+
+# module "vpc" {
+#   source  = "../../modules/vpc"
+#   project = var.project
+#   env     = local.env
+# }
 
 # module "http_server" {
 #   source  = "../../modules/http_server"
@@ -207,29 +221,47 @@ resource "google_eventarc_trigger" "trigger-pubsub-tf" {
   }
 }
 
-# resource "google_cloud_run_service_iam_member" "allUsers" {
-#   service  = google_cloud_run_service.my-service.name
-#   location = google_cloud_run_service.my-service.location
-#   role     = "roles/run.invoker"
-#   member   = "allUsers"
-# }
+resource "google_cloud_run_service_iam_member" "allUsers" {
+  service  = google_cloud_run_service.my-service.name
+  location = google_cloud_run_service.my-service.location
+  role     = "roles/run.invoker"
+  member   = "allUsers"
+}
 
-# resource "google_service_account" "build_runner" {
-#   project      = "example"
-#   account_id   = "build-runner"
-# }
-  
-# resource "google_project_iam_custom_role" "build_runner" {
-#   project     = "example"
-#   role_id     = "buildRunner"
-#   title       = "Build Runner"
-#   description = "Grants permissions to trigger Cloud Builds."
-#   permissions = ["cloudbuild.builds.create"]
-# }
+resource "google_service_account_iam_binding" "cloudbuild-role1" {
+  service_account_id = "${var.project_id}@cloudbuild.gserviceaccount.com"
+  role               = "roles/editor"
+}
 
-# resource "google_project_iam_member" "build_runner_build_runner" {
-#   project = "example"
-#   role    = google_project_iam_custom_role.build_runner.name
-#   member  = "serviceAccount:${google_service_account.build_runner.email}"
-# }
+resource "google_service_account_iam_binding" "cloudbuild-role2" {
+  service_account_id = "${var.project_id}@cloudbuild.gserviceaccount.com"
+  role               = "roles/storage.admin"
+}
+
+resource "google_service_account_iam_binding" "cloudbuild-role3" {
+  service_account_id = "${var.project_id}@cloudbuild.gserviceaccount.com"
+  role               = "roles/storage.objectAdmin"
+}
+
+resource "google_service_account_iam_binding" "cloudbuild-role4" {
+  service_account_id = "${var.project_id}@cloudbuild.gserviceaccount.com"
+  role               = "roles/bigquery.admin
+}
+
+resource "google_service_account_iam_binding" "cloudstorage-role1" {
+  service_account_id = "service-${var.project_number}@gs-project-accounts.iam.gserviceaccount.com"
+  role               = "roles/pubsub.admin"
+}
+
+resource "google_service_account_iam_binding" "compute-role1" {
+  service_account_id = "${var.project_id}-compute@developer.gserviceaccount.com"
+  role               = "roles/storage.admin"
+}
+
+resource "google_service_account_iam_binding" "compute-role1" {
+  service_account_id = "${var.project_id}-compute@developer.gserviceaccount.com"
+  role               = "roles/bigquery.admin"
+}
+
+
 
