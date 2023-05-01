@@ -28,26 +28,6 @@ output "url" {
   value = "google_cloud_run_service.my-service.status[0].url"
 }
 
-# output "network" {
-#   value = module.vpc.network
-# }
-
-# output "subnet" {
-#   value = module.vpc.subnet
-# }
-
-# output "firewall_rule" {
-#   value = module.firewall.firewall_rule
-# }
-
-# output "instance_name" {
-#   value = module.http_server.instance_name
-# }
-
-# output "external_ip" {
-#   value = module.http_server.external_ip
-# }
-
 output "bigquery_dataset" {
   value       = module.bigquery.bigquery_dataset
   #description = "Bigquery dataset resource."

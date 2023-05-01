@@ -44,29 +44,18 @@ resource "google_project_service" "eventarc" {
   service            = "eventarc.googleapis.com"
 }
 
-# Enable Eventarc API
+# Enable Cloud Resource Manager API
 resource "google_project_service" "cloudresourcemanager" {
   project = var.project
   service            = "cloudresourcemanager.googleapis.com"
 }
 
-# module "vpc" {
-#   source  = "../../modules/vpc"
-#   project = var.project
-#   env     = local.env
-# }
+# Enable Dataform API
+resource "google_project_service" "dataform" {
+  project = var.project
+  service            = "dataform.googleapis.com"
+}
 
-# module "http_server" {
-#   source  = "../../modules/http_server"
-#   project = var.project
-#   subnet  = module.vpc.subnet
-# }
-
-# module "firewall" {
-#   source  = "../../modules/firewall"
-#   project = var.project
-#   subnet  = module.vpc.subnet
-# }
   
 module "bigquery" {
   source                     = "terraform-google-modules/bigquery/google"
