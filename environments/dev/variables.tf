@@ -54,12 +54,6 @@ variable "service_name" {
   default     = "config-service"
 }
 
-variable "repository_name" {
-  description = "Name of the Google Cloud Source Repository to create."
-  type        = string
-  default     = "config-app"
-}
-
 variable "image_name" {
   description = "The name of the image to deploy. Defaults to a publically available image."
   type        = string

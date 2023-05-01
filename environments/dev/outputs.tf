@@ -28,13 +28,13 @@ output "url" {
   value = "google_cloud_run_service.my-service.status[0].url"
 }
 
-output "network" {
-  value = module.vpc.network
-}
+# output "network" {
+#   value = module.vpc.network
+# }
 
-output "subnet" {
-  value = module.vpc.subnet
-}
+# output "subnet" {
+#   value = module.vpc.subnet
+# }
 
 # output "firewall_rule" {
 #   value = module.firewall.firewall_rule
