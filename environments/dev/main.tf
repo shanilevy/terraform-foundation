@@ -170,22 +170,22 @@ resource "google_cloudbuild_trigger" "gcs-to-bigquery" {
 # }
 
 
-resource "google_cloud_run_service" "my-service" {
-  name = var.service_name
-  location = var.region
+# resource "google_cloud_run_service" "my-service" {
+#   name = var.service_name
+#   location = var.region
 
-  template  {
-    spec {
-    containers {
-            image = "gcr.io/${var.project}/gcs-bq-image:latest"
-    }
-  }
-  }
-  traffic {
-    percent         = 100
-    latest_revision = true
-  }
-}
+#   template  {
+#     spec {
+#     containers {
+#             image = "gcr.io/${var.project}/gcs-bq-image:latest"
+#     }
+#   }
+#   }
+#   traffic {
+#     percent         = 100
+#     latest_revision = true
+#   }
+# }
 
 resource "google_eventarc_trigger" "trigger-pubsub-tf" {
     name = "trigger-pubsub-tf"
@@ -196,7 +196,7 @@ resource "google_eventarc_trigger" "trigger-pubsub-tf" {
     }
     destination {
         cloud_run_service {
-            service = google_cloud_run_service.my-service.name
+            service = google_cloud_run_service.gcs-to-bq.name
             region = var.region
         }
     }
