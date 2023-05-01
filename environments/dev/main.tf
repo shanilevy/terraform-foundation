@@ -228,40 +228,42 @@ resource "google_cloud_run_service_iam_member" "allUsers" {
   member   = "allUsers"
 }
 
-resource "google_service_account_iam_binding" "cloudbuild-role1" {
-  service_account_id = "${var.project_id}@cloudbuild.gserviceaccount.com"
-  role               = "roles/editor"
-}
+# resource "google_service_account_iam_binding" "cloudbuild-role1" {
+#   service_account_id = "${var.project_id}@cloudbuild.gserviceaccount.com"
+#   role               = "roles/editor"
 
-resource "google_service_account_iam_binding" "cloudbuild-role2" {
-  service_account_id = "${var.project_id}@cloudbuild.gserviceaccount.com"
-  role               = "roles/storage.admin"
-}
+#   members     = ["serviceAccount:${var.project_id}@cloudbuild.iam.gserviceaccount.com"]
+# }
 
-resource "google_service_account_iam_binding" "cloudbuild-role3" {
-  service_account_id = "${var.project_id}@cloudbuild.gserviceaccount.com"
-  role               = "roles/storage.objectAdmin"
-}
+# resource "google_service_account_iam_binding" "cloudbuild-role2" {
+#   service_account_id = "${var.project_id}@cloudbuild.gserviceaccount.com"
+#   role               = "roles/storage.admin"
+# }
 
-resource "google_service_account_iam_binding" "cloudbuild-role4" {
-  service_account_id = "${var.project_id}@cloudbuild.gserviceaccount.com"
-  role               = "roles/bigquery.admin
-}
+# resource "google_service_account_iam_binding" "cloudbuild-role3" {
+#   service_account_id = "${var.project_id}@cloudbuild.gserviceaccount.com"
+#   role               = "roles/storage.objectAdmin"
+# }
 
-resource "google_service_account_iam_binding" "cloudstorage-role1" {
-  service_account_id = "service-${var.project_number}@gs-project-accounts.iam.gserviceaccount.com"
-  role               = "roles/pubsub.admin"
-}
+# resource "google_service_account_iam_binding" "cloudbuild-role4" {
+#   service_account_id = "${var.project_id}@cloudbuild.gserviceaccount.com"
+#   role               = "roles/bigquery.admin
+# }
 
-resource "google_service_account_iam_binding" "compute-role1" {
-  service_account_id = "${var.project_id}-compute@developer.gserviceaccount.com"
-  role               = "roles/storage.admin"
-}
+# resource "google_service_account_iam_binding" "cloudstorage-role1" {
+#   service_account_id = "service-${var.project_number}@gs-project-accounts.iam.gserviceaccount.com"
+#   role               = "roles/pubsub.admin"
+# }
 
-resource "google_service_account_iam_binding" "compute-role1" {
-  service_account_id = "${var.project_id}-compute@developer.gserviceaccount.com"
-  role               = "roles/bigquery.admin"
-}
+# resource "google_service_account_iam_binding" "compute-role1" {
+#   service_account_id = "${var.project_id}-compute@developer.gserviceaccount.com"
+#   role               = "roles/storage.admin"
+# }
+
+# resource "google_service_account_iam_binding" "compute-role1" {
+#   service_account_id = "${var.project_id}-compute@developer.gserviceaccount.com"
+#   role               = "roles/bigquery.admin"
+# }
 
 
 
