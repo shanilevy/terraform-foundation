@@ -28,30 +28,26 @@ resource "random_id" "bucket_prefix" {
 
 # Enable Cloud Run API
 resource "google_project_service" "run" {
-  provider           = google-beta
+  project = var.project
   service            = "run.googleapis.com"
-  disable_on_destroy = false
 }
 
 # Enable Cloud Build API
 resource "google_project_service" "cloudbuild" {
-  provider           = google-beta
+  project = var.project
   service            = "cloudbuild.googleapis.com"
-  disable_on_destroy = false
 }
 
 # Enable Eventarc API
 resource "google_project_service" "eventarc" {
-  provider           = google-beta
+  project = var.project
   service            = "eventarc.googleapis.com"
-  disable_on_destroy = false
 }
 
 # Enable Eventarc API
 resource "google_project_service" "cloudresourcemanager" {
-  provider           = google-beta
+  project = var.project
   service            = "cloudresourcemanager.googleapis.com"
-  disable_on_destroy = false
 }
 
 # module "vpc" {
