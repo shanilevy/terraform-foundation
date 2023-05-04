@@ -24,6 +24,10 @@ output "project_number" {
   value = var.project_number
 }
 
+output "secret_data" {
+  value = var.secret_data
+}
+
 output "url" {
   value = "google_cloud_run_service.my-service.status[0].url"
 }

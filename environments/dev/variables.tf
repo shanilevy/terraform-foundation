@@ -28,6 +28,11 @@ variable "project_number" {
   type = string
 }
 
+variable "secret_data" {
+  description = "The github tokern"
+  type = string
+}
+
 variable "region" {
   description = "The location region to deploy the Cloud Run services. Note: Be sure to pick a region that supports Cloud Run."
   type        = string

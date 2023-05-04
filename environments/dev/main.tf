@@ -221,7 +221,7 @@ resource "google_secret_manager_secret_version" "secret_version" {
   provider = google-beta
   secret = google_secret_manager_secret.secret.id
 
-  secret_data = "secret-data"
+  secret_data = var.secret_data
 }
 
 resource "google_dataform_repository" "dataform_respository" {
