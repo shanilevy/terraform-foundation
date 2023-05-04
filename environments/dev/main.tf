@@ -209,7 +209,7 @@ resource "google_eventarc_trigger" "trigger-pubsub-tf" {
 
 resource "google_secret_manager_secret" "secret" {
   provider = google-beta
-  secret_id = "projects/${var.project_number}/secrets/github-dataform"
+  secret_id = "github-dataform-secret"
   project   = var.project
 
   replication {
