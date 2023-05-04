@@ -206,6 +206,34 @@ resource "google_eventarc_trigger" "trigger-pubsub-tf" {
   }
 }
 
+
+resource "google_secret_manager_secret" "secret" {
+  provider = google-beta
+  secret_id = "projects/${var.project_number}/secrets/github-dataform"
+
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "secret_version" {
+  provider = google-beta
+  secret = google_secret_manager_secret.secret.id
+
+  secret_data = "secret-data"
+}
+
+resource "google_dataform_repository" "dataform_respository" {
+  provider = google-beta
+  name = "dataform_gcs_to_bq_repository"
+
+  git_remote_settings {
+      url = "https://github.com/shanilevy/dataform-gcs-to-bq"
+      default_branch = "bq-branch"
+      authentication_token_secret_version = google_secret_manager_secret_version.secret_version.id
+  }
+}
+
 # resource "google_cloud_run_service_iam_member" "allUsers" {
 #   service  = google_cloud_run_service.my-service.name
 #   location = google_cloud_run_service.my-service.location
