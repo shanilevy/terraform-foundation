@@ -1,1 +1,1 @@
-terraform.tfvars
+environments/dev/terraform.tfvars
