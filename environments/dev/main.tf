@@ -242,7 +242,6 @@ resource "google_dataform_repository" "dataform_respository2" {
   name = "dataform_gcs_to_bq_repository2"
   project   = var.project
   region = var.region
-  workspace = "test"
 
   git_remote_settings {
       url = "https://github.com/shanilevy/dataform-gcs-to-bq"
