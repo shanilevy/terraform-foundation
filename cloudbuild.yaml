@@ -32,6 +32,7 @@ steps:
   - |
       if [ -d "environments/$BRANCH_NAME/" ]; then
         cd environments/$BRANCH_NAME
+        echo "$$TF_VARS" > $BRANCH_NAME.auto.tfvars
         terraform init
       else
         for dir in environments/*/
@@ -89,4 +90,8 @@ steps:
         echo "Branch '$BRANCH_NAME' does not represent an oficial environment."
         echo "*******************************************************************************"
       fi
+availableSecrets:
+  secretManager:
+  - versionName: projects/$PROJECT_ID/secrets/tf_vars/versions/latest
+    env: TF_VARS
 # [END tf-apply]      
