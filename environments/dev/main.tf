@@ -56,6 +56,11 @@ resource "google_project_service" "dataform" {
   service            = "dataform.googleapis.com"
 }
 
+resource "google_project_service" "workflows" {
+  service            = "workflows.googleapis.com"
+  disable_on_destroy = false
+}
+
   
 module "bigquery" {
   source                     = "terraform-google-modules/bigquery/google"
@@ -248,6 +253,55 @@ resource "google_dataform_repository" "dataform_respository2" {
       default_branch = "bq-branch"
       authentication_token_secret_version = google_secret_manager_secret_version.secret_version.id
   }
+}
+
+resource "google_service_account" "workflows_service_account" {
+  account_id   = "sample-workflows-sa"
+  display_name = "Sample Workflows Service Account"
+}
+
+resource "google_workflows_workflow" "workflows_example" {
+  name            = "sample-workflow"
+  region          = "us-central1"
+  description     = "A sample workflow"
+  service_account = google_service_account.workflows_service_account.id
+  source_contents = <<-EOF
+  # This workflow does the following:
+  # - reads current time and date information from an external API and stores
+  #   the response in CurrentDateTime variable
+  # - retrieves a list of Wikipedia articles related to the day of the week
+  #   from CurrentDateTime
+  # - returns the list of articles as an output of the workflow
+  # FYI, In terraform you need to escape the $$ or it will cause errors.
+
+  main:
+    steps:
+    - init:
+        assign:
+        - repository: projects/dataops-terraform/locations/us-central1/repositories/dataform_gcs_to_bq_repository
+    - createCompilationResult:
+        call: http.post
+        args:
+            url: ${"https://dataform.googleapis.com/v1beta1/" + repository + "/compilationResults"}
+            auth:
+                type: OAuth2
+            body:
+                gitCommitish: bq-branch
+        result: compilationResult
+    - createWorkflowInvocation:
+        call: http.post
+        args:
+            url: ${"https://dataform.googleapis.com/v1beta1/" + repository + "/workflowInvocations"}
+            auth:
+                type: OAuth2
+            body:
+                compilationResult: ${compilationResult.body.name}
+        result: workflowInvocation
+    - complete:
+        return: ${workflowInvocation.body.name}
+EOF
+
+  depends_on = [google_project_service.workflows]
 }
 
 # resource "google_cloud_run_service_iam_member" "allUsers" {
