@@ -282,7 +282,7 @@ resource "google_workflows_workflow" "workflows_example" {
     - createCompilationResult:
         call: http.post
         args:
-            url: ${"https://dataform.googleapis.com/v1beta1/" + repository + "/compilationResults"}
+            url: "https://dataform.googleapis.com/v1beta1/" + repository + "/compilationResults"
             auth:
                 type: OAuth2
             body:
@@ -291,7 +291,7 @@ resource "google_workflows_workflow" "workflows_example" {
     - createWorkflowInvocation:
         call: http.post
         args:
-            url: ${"https://dataform.googleapis.com/v1beta1/" + repository + "/workflowInvocations"}
+            url: "https://dataform.googleapis.com/v1beta1/" + repository + "/workflowInvocations"
             auth:
                 type: OAuth2
             body:
