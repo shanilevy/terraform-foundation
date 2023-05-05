@@ -278,7 +278,7 @@ resource "google_workflows_workflow" "workflows_example" {
     steps:
     - init:
         assign:
-        - repository: projects/dataops-terraform/locations/us-central1/repositories/dataform_gcs_to_bq_repository
+        - repository: projects/$${var.project}/locations/$${var.region}/repositories/dataform_gcs_to_bq_repository
     - createCompilationResult:
         call: http.post
         args:
