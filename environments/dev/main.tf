@@ -130,7 +130,7 @@ resource "google_pubsub_topic_iam_binding" "binding" {
 
   
 resource "google_storage_bucket" "bq-files-bucket" {
- name          = "bq-files-bucket"
+ name          = "bq-files-bucket-${var.project}"
  location      = "US"
  storage_class = "STANDARD"
 
@@ -189,6 +189,7 @@ resource "google_cloud_run_service" "my-service" {
     percent         = 100
     latest_revision = true
   }
+  depends_on = [google_project_service.run]
 }
 
 resource "google_eventarc_trigger" "trigger-pubsub-tf" {
