@@ -181,7 +181,8 @@ resource "google_cloud_run_service" "my-service" {
   template  {
     spec {
     containers {
-            image = "gcr.io/${var.project}/gcs-bq-image:ff3e9ca"
+            #image = "gcr.io/${var.project}/gcs-bq-image:ff3e9ca"
+            image = "gcr.io/cloudrun/hello"
     }
   }
   }
