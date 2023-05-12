@@ -284,10 +284,10 @@ resource "google_workflows_workflow" "workflows_example" {
             auth:
                 type: OAuth2
             body:
-                compilationResult: $${compilationResult.body.name}
+                compilationResult: ${compilationResult.body.name}
         result: workflowInvocation
     - complete:
-        return: $${workflowInvocation.body.name}
+        return: ${workflowInvocation.body.name}
 EOF
 
   depends_on = [google_project_service.workflows]
