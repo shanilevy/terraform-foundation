@@ -244,16 +244,16 @@ resource "google_dataform_repository" "dataform_respository" {
   }
 }
 
-# resource "google_service_account" "workflows_service_account" {
-#   account_id   = "sample-workflows-sa"
-#   display_name = "Sample Workflows Service Account"
-# }
+resource "google_service_account" "workflows_service_account" {
+  account_id   = "sample-workflows-sa"
+  display_name = "Sample Workflows Service Account"
+}
 
 resource "google_workflows_workflow" "workflows_example" {
   name            = "sample-workflow"
   region          = "us-central1"
   description     = "A sample workflow"
-  #service_account = google_service_account.workflows_service_account.id
+  service_account = google_service_account.workflows_service_account.id
   source_contents = <<-EOF
   # This workflow does the following:
   # - reads current time and date information from an external API and stores
@@ -271,7 +271,7 @@ resource "google_workflows_workflow" "workflows_example" {
     - createCompilationResult:
         call: http.post
         args:
-            url: ${"https://dataform.googleapis.com/v1beta1/" + repository + "/compilationResults"}
+            url: "https://dataform.googleapis.com/v1beta1/" + repository + "/compilationResults"
             auth:
                 type: OAuth2
             body:
@@ -280,14 +280,14 @@ resource "google_workflows_workflow" "workflows_example" {
     - createWorkflowInvocation:
         call: http.post
         args:
-            url: ${"https://dataform.googleapis.com/v1beta1/" + repository + "/workflowInvocations"}
+            url: "https://dataform.googleapis.com/v1beta1/" + repository + "/workflowInvocations"
             auth:
                 type: OAuth2
             body:
-                compilationResult: ${compilationResult.body.name}
+                compilationResult: $${compilationResult.body.name}
         result: workflowInvocation
     - complete:
-        return: ${workflowInvocation.body.name}
+        return: $${workflowInvocation.body.name}
 EOF
 
   depends_on = [google_project_service.workflows]
