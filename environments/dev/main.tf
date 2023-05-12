@@ -244,19 +244,6 @@ resource "google_dataform_repository" "dataform_respository" {
   }
 }
 
-resource "google_dataform_repository" "dataform_respository2" {
-  provider = google-beta
-  name = "dataform_gcs_to_bq_repository2"
-  project   = var.project
-  region = var.region
-
-  git_remote_settings {
-      url = "https://github.com/shanilevy/dataform-gcs-to-bq"
-      default_branch = "bq-branch"
-      authentication_token_secret_version = google_secret_manager_secret_version.secret_version.id
-  }
-}
-
 # resource "google_service_account" "workflows_service_account" {
 #   account_id   = "sample-workflows-sa"
 #   display_name = "Sample Workflows Service Account"
