@@ -186,8 +186,8 @@ resource "google_cloud_run_service" "my-service" {
   template  {
     spec {
     containers {
-            #image = "gcr.io/${var.project}/gcs-bq-image:ff3e9ca"
-            image = "gcr.io/cloudrun/hello"
+            image = "gcr.io/${var.project}/gcs-bq-image:b1673c1"
+            #image = "gcr.io/cloudrun/hello"
     }
   }
   }
@@ -249,16 +249,10 @@ resource "google_dataform_repository" "dataform_respository" {
   }
 }
 
-# resource "google_service_account" "workflows_service_account" {
-#   account_id   = "sample-workflows-sa"
-#   display_name = "Sample Workflows Service Account"
-# }
-
 resource "google_workflows_workflow" "workflows_example" {
   name            = "dataform-workflow"
   region          = "us-central1"
   description     = "Dataform workflow"
-  #service_account = google_service_account.workflows_service_account.id
   source_contents = <<-EOF
   # This workflow does the following:
   # - reads current time and date information from an external API and stores
@@ -272,7 +266,7 @@ resource "google_workflows_workflow" "workflows_example" {
     steps:
     - init:
         assign:
-        - repository: projects/$${var.project}/locations/$${var.region}/repositories/dataform_gcs_to_bq_repository
+        - repository: projects/${var.project}/locations/${var.region}/repositories/dataform_gcs_to_bq_repository
     - createCompilationResult:
         call: http.post
         args:
