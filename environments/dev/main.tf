@@ -255,9 +255,9 @@ resource "google_dataform_repository" "dataform_respository" {
 # }
 
 resource "google_workflows_workflow" "workflows_example" {
-  name            = "sample-workflow"
+  name            = "dataform-workflow"
   region          = "us-central1"
-  description     = "A sample workflow"
+  description     = "Dataform workflow"
   #service_account = google_service_account.workflows_service_account.id
   source_contents = <<-EOF
   # This workflow does the following:
