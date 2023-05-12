@@ -249,16 +249,16 @@ resource "google_dataform_repository" "dataform_respository" {
   }
 }
 
-resource "google_service_account" "workflows_service_account" {
-  account_id   = "sample-workflows-sa"
-  display_name = "Sample Workflows Service Account"
-}
+# resource "google_service_account" "workflows_service_account" {
+#   account_id   = "sample-workflows-sa"
+#   display_name = "Sample Workflows Service Account"
+# }
 
 resource "google_workflows_workflow" "workflows_example" {
   name            = "sample-workflow"
   region          = "us-central1"
   description     = "A sample workflow"
-  service_account = google_service_account.workflows_service_account.id
+  #service_account = google_service_account.workflows_service_account.id
   source_contents = <<-EOF
   # This workflow does the following:
   # - reads current time and date information from an external API and stores
