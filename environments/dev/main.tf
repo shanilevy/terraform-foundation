@@ -61,6 +61,11 @@ resource "google_project_service" "workflows" {
   disable_on_destroy = false
 }
 
+resource "google_project_service" "IAM" {
+  project = var.project
+  service            = "iam.googleapis.com"
+}
+
   
 module "bigquery" {
   source                     = "terraform-google-modules/bigquery/google"
